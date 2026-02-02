@@ -11,7 +11,9 @@ Cloud LLM costs are calculated by token count. Raw user queries are often verbos
 
 A 3-stage automated pipeline:
 1.	Ingestion: Batch processing of raw queries from JSON sources.
+   
 2.	Optimization: A local LangGraph node uses Phi-3-mini to rewrite the prompt into a concise, professional instruction.
+   
 3.	Execution: The optimized prompt is sent to the Grok API, significantly reducing the input token overhead.
 
 ## Dataset Details
@@ -65,23 +67,31 @@ o	The API generates a high-reasoning response based on the "surgical" input.
 By leveraging local SLMs for pre-processing, we achieved substantial token savings while maintaining high-quality outputs.
 
 |Metric|	Original (Raw)|	Optimized (Phi-3)|	Efficiency Gain|
-|:---|:---:|---:|
+
 |Avg. Query Length|	154 chars|	68 chars|	~55% Reduction|
+
 |Avg. Token Cost|	High ($$$)|	Optimized ($)|	Cost-Effective|
 
 ## Installation & Setup
 Prerequisites
+
 •	Ollama installed on your machine.
 •	Python 3.12+ environment.
 
 
 1. Clone & Environment
-git clone 
+   
+git clone
+
 cd
+
 pip install -r requirements.txt
+
 2. Local Model Setup
+
 ollama pull phi3:mini
-3. API Configuration
+4. API Configuration
+
 Create a .env file in the root directory:
 GROK_API_KEY=your_api_key_here
 
@@ -95,14 +105,19 @@ python stages/batch_stage3.py
 ## Hardware Requirements & Engineering Constraints
 
 Environment Specifications
+
 •	Operating System: Ubuntu 24.04 LTS
+
 •	Local Inference Engine: Ollama (serving Phi-3-mini)
+
 •	Compute: INTEL CORE I5
+
 •	Memory: 16GB RAM (10GB Assigned to Virtual Machine )
 
 ## Scale & Throughput Note
 
 While the architecture is designed to handle the full 6,648-row FIQA dataset, processing was intentionally limited by local hardware constraints, specifically a VM environment assigned 10GB of RAM. To maintain system stability and manage the memory overhead of running local inference (Ollama/Phi-3) alongside the execution pipeline, testing was performed in iterative batches of 5, 20, and 50 queries across different stages. This modular approach allowed for logic verification and safety-net benchmarking without exceeding the physical hardware limits of the laptop, ensuring the system remains architecturally ready for full-scale deployment on high-performance GPU instances.
+
 
 
 
