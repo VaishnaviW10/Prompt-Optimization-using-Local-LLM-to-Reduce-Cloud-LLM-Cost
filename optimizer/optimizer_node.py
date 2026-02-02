@@ -1,4 +1,3 @@
-#from langchain_community.llms import Ollama
 from optimizer.prompt_templates import OPTIMIZER_SYSTEM_PROMPT
 from optimizer.token_utils import count_tokens
 
@@ -26,4 +25,5 @@ def optimize_prompt(state: dict) -> dict:
     final_response = llm.invoke(optimized_query)
 
     return {"final_response": final_response}
+
 
