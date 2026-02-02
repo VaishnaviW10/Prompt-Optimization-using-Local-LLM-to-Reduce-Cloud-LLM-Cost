@@ -6,7 +6,7 @@ from optimizer.token_utils import count_tokens
 MAX_QUERIES = 10
 results = []
 
-# This is the "Secret Sauce" to fix your project goal
+# This is the "Secret Sauce" to fix the project goal
 OPTIMIZATION_INSTRUCTION = "Task: Shorten the following prompt to be highly token-efficient. Keep only the core intent. Do NOT answer it. Prompt: "
 
 with open("data/queries.json", "r") as f:
