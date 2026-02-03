@@ -1,29 +1,32 @@
+
 from optimizer.prompt_templates import OPTIMIZER_SYSTEM_PROMPT
 from optimizer.token_utils import count_tokens
-
-
 from langchain_ollama import OllamaLLM
 
 llm = OllamaLLM(
     model="phi3:mini",
     temperature=0.0,
-    max_tokens=50, 
+    max_tokens=50,  
     keep_alive="5m"
 )
 
 def optimize_prompt(state: dict) -> dict:
-    """
-    Stage 3 LangGraph node
-    Reads 'optimized_query' from Stage 2 output
-    Returns final LLM response
-    """
+    user_prompt = state["user_prompt"]
 
-    # USE THE SAME KEY AS STAGE 2
-    optimized_query = state["optimized_query"]
+    optimized_prompt = llm.invoke(
+        f"{OPTIMIZER_SYSTEM_PROMPT}\n\nUser Query:\n{user_prompt}"
+    )
 
-    # Call LLM with optimized query
-    final_response = llm.invoke(optimized_query)
+    optimized_prompt = optimized_prompt.strip().split("\n")[0]
 
-    return {"final_response": final_response}
+    return {
+        "original_prompt": user_prompt,
+        "optimized_prompt": optimized_prompt,
+        "original_tokens": count_tokens(user_prompt),
+        "optimized_tokens": count_tokens(optimized_prompt),
+    }
+
+
+
 
 
