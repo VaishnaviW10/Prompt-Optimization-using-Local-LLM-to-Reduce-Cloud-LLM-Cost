@@ -6,3 +6,5 @@ tiktoken>=0.5.2
 sentence-transformers>=2.2.2
 pandas
 google-generativeai
+grok
+
