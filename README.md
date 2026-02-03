@@ -14,7 +14,7 @@ A 3-stage automated pipeline:
    
 2.	Optimization: A local LangGraph node uses Phi-3-mini to rewrite the prompt into a concise, professional instruction.
    
-3.	Execution: The optimized prompt is sent to the Grok API, significantly reducing the input token overhead.
+3.	Execution: The optimized prompt is sent to the Groq API, significantly reducing the input token overhead.
 
 ## Dataset Details
 
@@ -40,7 +40,7 @@ The Technical Workflow
 
    o	Output: A high-density, token-reduced version of the original prompt.
 
-3.	Cloud Execution (Grok API):
+3.	Cloud Execution (Groq API):
    
    o	The Optimized Prompt is dispatched to the xAI Grok endpoint.
 
@@ -66,7 +66,10 @@ The Technical Workflow
 ├── stages/                 
 │   ├── batch_stage1.py
 │   ├── batch_stage2_safety_net.py
-│   └── batch_stage3.py 
+│   └── batch_stage3.py
+│
+├── groq_node_pkg/                   
+│    └──groq_node.py
 │   
 ├── graph.py                
 ├── requirements.txt        
@@ -79,7 +82,7 @@ By leveraging local SLMs for pre-processing, we achieved substantial token savin
 
 Metric            |Original (Raw) |  Optimized (Phi-3) |  Efficiency Gain
 
-Avg. Query Length | 154 chars     | 68 chars           |  ~55% Reduction
+Avg. Query Length | 154 chars     | 68 chars           |  ~50% Reduction
 
 Avg. Token Cost   | High ($$$)    | Optimized ($)      |   Cost-Effective
 
@@ -104,7 +107,7 @@ ollama pull phi3:mini
 3. API Configuration
 
 Create a .env file in the root directory:
-GROK_API_KEY=your_api_key_here
+GROQ_API_KEY=your_api_key_here
 
 4. Run the pipeline stages sequentially:
 
@@ -129,6 +132,7 @@ Environment Specifications
 ## Scale & Throughput Note
 
 While the architecture is designed to handle the full 6,648-row FIQA dataset, processing was intentionally limited by local hardware constraints, specifically a VM environment assigned 10GB of RAM. To maintain system stability and manage the memory overhead of running local inference (Ollama/Phi-3) alongside the execution pipeline, testing was performed in iterative batches of 5, 20, and 50 queries across different stages. This modular approach allowed for logic verification and safety-net benchmarking without exceeding the physical hardware limits of the laptop, ensuring the system remains architecturally ready for full-scale deployment on high-performance GPU instances.
+
 
 
 
