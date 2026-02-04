@@ -2,7 +2,7 @@
 
 ## Technical Overview
 
-This repository contains a modular 3-stage AI engineering pipeline designed to reduce the operational costs of high-end LLMs (like Grok-1 or GPT-4). The system implements a Small-to-Large Model Pipeline where a local SLM (Phi-3:mini) acts as an intelligent "Compressor" to optimize user prompts before they are sent to an expensive cloud-based API.
+This repository contains a modular 3-stage AI engineering pipeline designed to reduce the operational costs of high-end LLMs (like Groq or GPT-4). The system implements a Small-to-Large Model Pipeline where a local SLM (Phi-3:mini) acts as an intelligent "Compressor" to optimize user prompts before they are sent to an expensive cloud-based API.
 ## The Problem
 
 Cloud LLM costs are calculated by token count. Raw user queries are often verbose, unorganized, and redundant, leading to significantly higher API costs without improving response quality.
@@ -42,7 +42,7 @@ The Technical Workflow
 
 3.	Cloud Execution (Groq API):
    
-   o	The Optimized Prompt is dispatched to the xAI Grok endpoint.
+   o	The Optimized Prompt is dispatched to the Groq endpoint.
 
    o	The API generates a high-reasoning response based on the "surgical" input.
 
@@ -112,8 +112,11 @@ GROQ_API_KEY=your_api_key_here
 4. Run the pipeline stages sequentially:
 
 Start the optimization and execution pipeline
+
 python stages/batch_stage1.py
+
 python stages/ batch_stage2_safety_net.py
+
 python stages/batch_stage3.py
 
 
@@ -132,6 +135,7 @@ Environment Specifications
 ## Scale & Throughput Note
 
 While the architecture is designed to handle the full 6,648-row FIQA dataset, processing was intentionally limited by local hardware constraints, specifically a VM environment assigned 10GB of RAM. To maintain system stability and manage the memory overhead of running local inference (Ollama/Phi-3) alongside the execution pipeline, testing was performed in iterative batches of 5, 20, and 50 queries across different stages. This modular approach allowed for logic verification and safety-net benchmarking without exceeding the physical hardware limits of the laptop, ensuring the system remains architecturally ready for full-scale deployment on high-performance GPU instances.
+
 
 
 
